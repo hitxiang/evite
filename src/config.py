@@ -1,5 +1,8 @@
 import os
-from datetime import datetime
+import logging
+
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
 class Config:

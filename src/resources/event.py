@@ -1,14 +1,15 @@
 from flask import request
 from flask_restful import Resource
 from http import HTTPStatus
+from datetime import datetime
 
 from models.event import Event
 
 
 class EventListResource(Resource):
-
     def get(self):
-        data = []
+        # TODO
+        data = Event.active_list(datetime.now())
 
         return {'data': data}, HTTPStatus.OK
 
@@ -29,7 +30,7 @@ class EventResource(Resource):
     def get(self, event_id):
         event = None
         if event is None:
-            return {'message': 'recipe not found'}, HTTPStatus.NOT_FOUND
+            return {'message': 'event not found'}, HTTPStatus.NOT_FOUND
 
         return {}, HTTPStatus.OK
 

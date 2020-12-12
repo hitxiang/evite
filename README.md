@@ -8,10 +8,27 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Run the command
+```angular2html
+cd src
+
+# create db schema
+flask db upgrade
+
+# populate event list, code is in src/scripts/manager.py#db_seed
+FLASK_APP=scripts/manager.py flask db_seed
+```
+
 ### Flask-migration
 ```angular2html
 cd src
+
+# no need to execute
 flask db init
+
+flask db migrate
+flask db upgrade
+
 
 ```
 

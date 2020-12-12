@@ -1,7 +1,7 @@
 from extensions import db
 
 
-class EventUser(db.Model):
+class EventSignup(db.Model):
     __tablename__ = 'event_signups'
 
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), primary_key=True)

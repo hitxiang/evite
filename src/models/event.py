@@ -1,5 +1,5 @@
 from extensions import db
-from models.event_user import EventUser
+from models.event_signup import EventSignup
 
 
 class Event(db.Model):
@@ -15,6 +15,6 @@ class Event(db.Model):
 
     users = db.relationship(
         'User',
-        secondary=EventUser.__tablename__,
+        secondary=EventSignup.__tablename__,
         back_populates='events',
     )

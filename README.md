@@ -42,3 +42,8 @@ from models.event import Event
 event = Event(name='test01')
 event.save()
 ```
+
+### Rest api
+```angular2html
+http://127.0.0.1:5000/events/20210102T123000
+```

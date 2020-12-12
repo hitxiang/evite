@@ -11,7 +11,7 @@ class Event(db.Model):
     description = db.Column(db.String(1000), nullable=False)
     start_time = db.Column(db.DateTime(), nullable=False)
     end_time = db.Column(db.DateTime(), nullable=False)
-    is_publish = db.Column(db.Boolean(), default=True)
+    is_publish = db.Column(db.Boolean(), default=False)
     created_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(), onupdate=db.func.now())
 
@@ -24,15 +24,15 @@ class Event(db.Model):
     @classmethod
     def active_list(cls, target_dt):
         # TODO stop signup x minutes ahead of end_time
-        return cls.query\
-            .filter(Event.start_time < target_dt)\
-            .filter(Event.end_time > target_dt)\
+        return cls.query \
+            .filter(Event.is_publish == True) \
+            .filter(Event.start_time < target_dt) \
+            .filter(Event.end_time > target_dt) \
             .all()
 
     @classmethod
-    def get(cls, event_id):
-        return cls.query.get(event_id)
-
+    def get_by_id(cls, event_id):
+        return cls.query.filter(Event.id == event_id).first()
 
     def save(self):
         db.session.add(self)

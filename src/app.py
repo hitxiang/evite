@@ -25,7 +25,7 @@ def register_extensions(app):
 
 def register_resources(app):
     api = Api(app)
-    api.add_resource(EventListResource, '/events', '/events/<str:datetime_str>')
+    api.add_resource(EventListResource, '/events', '/events/<string:datetime_str>')
     api.add_resource(EventResource, '/events/<int:event_id>')
     api.add_resource(EventSignupResource, '/events/<int:event_id>/signup')
 

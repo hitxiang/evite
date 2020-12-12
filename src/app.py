@@ -4,6 +4,8 @@ from flask_restful import Api
 
 from config import Config
 from extensions import db
+from resources.event import EventResource, EventListResource
+from resources.event_signup import EventSignupResource
 
 
 def create_app():
@@ -23,6 +25,9 @@ def register_extensions(app):
 
 def register_resources(app):
     api = Api(app)
+    api.add_resource(EventListResource, '/events')
+    api.add_resource(EventResource, '/events/<int:event_id>')
+    api.add_resource(EventSignupResource, '/events/<int:event_id>/signup')
 
 
 if __name__ == '__main__':

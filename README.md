@@ -29,6 +29,7 @@ cd src
 export MAILGUN_DOMAIN=sandbox7a50d70271ad4a2f8409d6d0297a833c.mailgun.org
 export MAILGUN_API_KEY=5b8bd6b9cc9241a0ec54f651de502a56-4879ff27-e4cb66df
 export PREDEFINED_MAIL=hitxiang@gmail.com
+
 # start the app
 flask run
 

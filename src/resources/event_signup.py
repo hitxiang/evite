@@ -7,6 +7,14 @@ from models.event_signup import EventSignup
 from models.user import User
 
 
+def _get_or_create_user(email):
+    user = User.get_by_email(email)
+    if user is None:
+        user = User(email=email)
+        user.save()
+    return user
+
+
 class EventSignupResource(Resource):
 
     def put(self, event_id):
@@ -20,7 +28,10 @@ class EventSignupResource(Resource):
             # TODO validate the email address
             return {'message': 'email is required'}, HTTPStatus.BAD_REQUEST
 
-        user = self._get_or_create_user(json_data['email'])
+        user = _get_or_create_user(json_data['email'])
+        es = EventSignup.find_by_event_and_user(event_id, user.id)
+        if es is None:
+            return {'message': 'Already signed up'}, HTTPStatus.NO_CONTENT
 
         event.users.append(user)
         event.save()
@@ -43,10 +54,3 @@ class EventSignupResource(Resource):
 
         EventSignup.delete_by_event_and_user(event_id, user.id)
         return {}, HTTPStatus.NO_CONTENT
-
-    def _get_or_create_user(self, email):
-        user = User.get_by_email(email)
-        if user is None:
-            user = User(email=email)
-            user.save()
-        return user

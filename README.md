@@ -31,7 +31,7 @@ cd src
 # start the app
 flask run
 
-# to access swagger docs
+# to access swagger docs, there are 2 tags: event and event_signup
 http://localhost:5000/apidocs/
 
 # import postman collection, there are 2 folders: event and event_signup

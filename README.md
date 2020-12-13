@@ -29,7 +29,11 @@ flask db init
 flask db migrate
 flask db upgrade
 
+# start the app
+flask run
 
+# to access swagger docs
+http://localhost:5000/apidocs/
 ```
 
 ### SQLAlchemy python console

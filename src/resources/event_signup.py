@@ -122,5 +122,8 @@ class EventSignupResource(Resource):
         if user is None:
             return {'message': 'No signup exists for the event'}, HTTPStatus.NOT_FOUND
 
-        EventSignup.delete_by_event_and_user(event_id, user.id)
+        es = EventSignup.find_by_event_and_user(event_id, user.id)
+        if es is None:
+            return {'message': 'No signup yet'}, HTTPStatus.BAD_REQUEST
+        es.delete()
         return {}, HTTPStatus.NO_CONTENT

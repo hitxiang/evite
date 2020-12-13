@@ -55,5 +55,13 @@ event = Event(name='test01')
 event.save()
 ```
 
+### update db after model is changed
+```angular2html
+cd src
+
+FLASK_APP=app.py flask db migrate
+flask db upgrade
+```
+
 
 

@@ -12,6 +12,7 @@ class Event(db.Model):
     start_time = db.Column(db.DateTime(), nullable=False)
     end_time = db.Column(db.DateTime(), nullable=False)
     is_publish = db.Column(db.Boolean(), default=False)
+    is_delete = db.Column(db.Boolean(), default=False)
     created_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(), onupdate=db.func.now())
 
@@ -32,7 +33,11 @@ class Event(db.Model):
 
     @classmethod
     def get_by_id(cls, event_id):
-        return cls.query.filter(Event.id == event_id).first()
+        return cls.query \
+            .filter(Event.id == event_id) \
+            .filter(Event.is_delete == False) \
+            .filter(Event.is_publish == True) \
+            .first()
 
     def save(self):
         db.session.add(self)

@@ -8,6 +8,8 @@ from extensions import db
 from resources.event import EventResource, EventListResource
 from resources.event_signup import EventSignupResource
 
+migrate = Migrate()
+
 
 def create_app():
     app = Flask(__name__)
@@ -22,7 +24,8 @@ def create_app():
 
 def register_extensions(app):
     db.init_app(app)
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
+
 
 def register_swagger(app):
     app.config['SWAGGER'] = {

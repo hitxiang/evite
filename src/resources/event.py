@@ -2,6 +2,8 @@ from flask import request
 from flask_restful import Resource
 from http import HTTPStatus
 from datetime import datetime
+from marshmallow import ValidationError
+
 
 from models.event import Event
 from schemas.event import EventSchema
@@ -9,7 +11,7 @@ from schemas.event import EventSchema
 event_schema = EventSchema()
 event_list_schema = EventSchema(many=True)
 
-datetime_format = '%Y%m%dT%H%M%S'
+datetime_format = '%Y-%m-%dT%H:%M:%S'
 
 
 class EventListResource(Resource):
@@ -23,7 +25,7 @@ class EventListResource(Resource):
           - in: path
             name: datetime_str
             required: false
-            description: datetime in %Y%m%dT%H%M%S format try 20210102T123000
+            description: datetime in %Y-%m-%dT%H:%M:%S format try 2021-01-02T12:30:00
             type: string
         responses:
           200:
@@ -64,9 +66,10 @@ class EventListResource(Resource):
               $ref: '#/definitions/Event'
          """
         json_data = request.get_json()
-        data, errors = event_schema.load(data=json_data)
-        if errors:
-            return {'message': 'Validation errors', 'errors': errors}, HTTPStatus.BAD_REQUEST
+        try:
+            data = event_schema.load(data=json_data)
+        except ValidationError as err:
+            return {'message': 'Validation errors', 'errors': err.messages}, HTTPStatus.BAD_REQUEST
 
         event = Event(**data)
         event.save()
@@ -106,11 +109,11 @@ class EventResource(Resource):
                 start_time:
                   type: date-time
                   required: true
-                  description: The start time of event
+                  description: The start time of event, format: %Y-%m-%dT%H:%M:%S
                 end_time:
                   type: date-time
                   required: true
-                  description: The end time of event
+                  description: The end time of event, format: %Y-%m-%dT%H:%M:%S
         """
         event = Event.get_by_id(event_id)
         if event is None:
@@ -142,11 +145,10 @@ class EventResource(Resource):
         """
         json_data = request.get_json()
 
-        data, errors = event_schema.load(data=json_data,
-                                         partial=('name', 'description', 'start_time', 'end_time',))
-
-        if errors:
-            return {'message': 'Validation errors', 'errors': errors}, HTTPStatus.BAD_REQUEST
+        try:
+            data = event_schema.load(data=json_data, partial=('name', 'description', 'start_time', 'end_time'))
+        except ValidationError as err:
+            return {'message': 'Validation errors', 'errors': err.messages}, HTTPStatus.BAD_REQUEST
 
         event = Event.get_by_id(event_id)
 
@@ -158,6 +160,9 @@ class EventResource(Resource):
         event.location = data.get('location') or event.location
         event.start_time = data.get('start_time') or event.start_time
         event.end_time = data.get('end_time') or event.end_time
+
+        if event.start_time >= event.end_time:
+            return {'message': 'end_time must be greater than start_time'}, HTTPStatus.BAD_REQUEST
 
         event.save()
 
@@ -184,6 +189,7 @@ class EventResource(Resource):
         if event is None:
             return {'message': 'Event not found'}, HTTPStatus.NOT_FOUND
 
-        event.delete()
+        event.is_delete = True
+        event.save()
 
         return {}, HTTPStatus.NO_CONTENT

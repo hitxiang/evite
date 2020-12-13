@@ -8,7 +8,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Run the command
+### DB migration and populate data seeds
 ```angular2html
 cd src
 
@@ -19,16 +19,16 @@ flask db upgrade
 FLASK_APP=scripts/manager.py flask db_seed
 ```
 
-### Flask-migration
+### Run and test api
+Since we are using sandbox for testing, the Recipients should be authorized first 
+in order to receive mails.
+now, the only authorized receipt is hitxiang@gmail.com
 ```angular2html
 cd src
 
-# no need to execute
-flask db init
-
-flask db migrate
-flask db upgrade
-
+export MAILGUN_DOMAIN=sandbox7a50d70271ad4a2f8409d6d0297a833c.mailgun.org
+export MAILGUN_API_KEY=5b8bd6b9cc9241a0ec54f651de502a56-4879ff27-e4cb66df
+export PREDEFINED_MAIL=hitxiang@gmail.com
 # start the app
 flask run
 
@@ -36,6 +36,12 @@ flask run
 http://localhost:5000/apidocs/
 ```
 
+### Rest api docs
+```angular2html
+http://127.0.0.1:5000/events/20210102T123000
+```
+
+## Others
 ### SQLAlchemy python console
 ```
 from app import create_app
@@ -47,7 +53,5 @@ event = Event(name='test01')
 event.save()
 ```
 
-### Rest api
-```angular2html
-http://127.0.0.1:5000/events/20210102T123000
-```
+
+

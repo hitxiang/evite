@@ -26,7 +26,7 @@ def register_extensions(app):
 
 def register_swagger(app):
     app.config['SWAGGER'] = {
-        'title': 'Flasgger RESTful',
+        'title': 'Evite Docs',
         'uiversion': 2
     }
     swag = Swagger(app)

@@ -28,6 +28,9 @@ please update .env to update the predefined mail address
 ```angular2html
 cd src
 
+# to update MAILGUN_API_KEY
+vim .env
+
 # start the app
 flask run
 

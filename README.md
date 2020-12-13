@@ -33,12 +33,11 @@ flask run
 
 # to access swagger docs
 http://localhost:5000/apidocs/
+
+# import postman collection, there are 2 folders: event and event_signup
+eventie.postman_collection.json 
 ```
 
-### Rest api docs
-```angular2html
-http://127.0.0.1:5000/events/20210102T123000
-```
 
 ### TODO
 - Async the mail notification with Celery, need to set up message broker 

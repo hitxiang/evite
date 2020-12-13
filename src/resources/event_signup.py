@@ -81,7 +81,7 @@ class EventSignupResource(Resource):
         event.save()
         ok = send_mail_notification(email, event_id, event.name)
         if not ok:
-            _logger.warning("mail to %s is failed for %d", email, event_id)
+            _logger.warning("notification of %s signup is failed for %d", email, event_id)
         return {}, HTTPStatus.NO_CONTENT
 
     def delete(self, event_id):

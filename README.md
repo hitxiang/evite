@@ -40,6 +40,9 @@ http://localhost:5000/apidocs/
 http://127.0.0.1:5000/events/20210102T123000
 ```
 
+### TODO
+- Async the mail notification with Celery, need to set up message broker 
+
 ## Others
 ### SQLAlchemy python console
 ```

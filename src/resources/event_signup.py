@@ -12,6 +12,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+# TODO send mail asynchronously
 def send_mail_notification(email, event_id, event_name):
     mailgun = MailgunApi(domain=current_app.config['MAILGUN_DOMAIN'],
                          api_key=current_app.config['MAILGUN_API_KEY'])
@@ -78,7 +79,9 @@ class EventSignupResource(Resource):
 
         event.users.append(user)
         event.save()
-        send_mail_notification(email, event_id, event.name)
+        ok = send_mail_notification(email, event_id, event.name)
+        if not ok:
+            _logger.warning("mail to %s is failed for %d", email, event_id)
         return {}, HTTPStatus.NO_CONTENT
 
     def delete(self, event_id):

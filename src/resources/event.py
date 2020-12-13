@@ -25,7 +25,7 @@ class EventListResource(Resource):
           - in: path
             name: datetime_str
             required: false
-            description: datetime in %Y-%m-%dT%H:%M:%S format try 2021-01-02T12:30:00
+            description: datetime in '%Y-%m-%dT%H:%M:%S' format try 2021-01-02T12:30:00
             type: string
         responses:
           200:
@@ -109,11 +109,11 @@ class EventResource(Resource):
                 start_time:
                   type: date-time
                   required: true
-                  description: The start time of event, format: %Y-%m-%dT%H:%M:%S
+                  description: The start time of event, in the format of '%Y-%m-%dT%H:%M:%S'
                 end_time:
                   type: date-time
                   required: true
-                  description: The end time of event, format: %Y-%m-%dT%H:%M:%S
+                  description: The end time of event, in the format of '%Y-%m-%dT%H:%M:%S'
         """
         event = Event.get_by_id(event_id)
         if event is None:
